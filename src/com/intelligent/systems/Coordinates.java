@@ -1,18 +1,15 @@
 package com.intelligent.systems;
 
-/**
- * Created by siriu on 27-Oct-16.
- */
-public class Coordinates {
+class Coordinates {
     private int x;
     private int y;
 
-    public Coordinates(int x, int y) {
+    Coordinates(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public int getX() {
+    int getX() {
         return x;
     }
 
@@ -20,7 +17,7 @@ public class Coordinates {
         this.x = x;
     }
 
-    public int getY() {
+    int getY() {
         return y;
     }
 

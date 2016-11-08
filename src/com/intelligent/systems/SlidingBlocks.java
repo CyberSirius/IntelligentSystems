@@ -3,16 +3,20 @@ package com.intelligent.systems;
 
 import java.util.*;
 
-public class SlidingBlocks {
+class SlidingBlocks {
+    private static Stack<Node> path = new Stack<>();
 
     static void solve(int sideOfPuzzle) {
-        List<List<Integer>> puzzle = new ArrayList<>();
+        int[][] puzzle = new int[sideOfPuzzle][sideOfPuzzle];
         Scanner in = new Scanner(System.in);
         for (int i = 0; i < sideOfPuzzle; i++) {
             String lineOfPuzzle = in.nextLine();
-            puzzle.add(parseLine(lineOfPuzzle));
+            List<Integer> line = parseLine(lineOfPuzzle);
+            for (int j = 0; j < puzzle[i].length; j++) {
+                puzzle[i][j] = line.get(j);
+            }
         }
-        Node start = new Node(puzzle);
+        Node start = new Node(puzzle, 0, "start");
         aStar(start);
     }
 
@@ -30,10 +34,20 @@ public class SlidingBlocks {
         priorityQueue.add(start);
         while (!priorityQueue.isEmpty()) {
             Node node = priorityQueue.poll();
-            System.out.println(Node.getManhattanDistance(node));
-            if (Node.getManhattanDistance(node) == 0)
-                System.out.println("yeah bby");
-            priorityQueue.addAll(node.getChildren());
+            if (node.isGoal()) {
+                System.out.println(node.getDistanceTravelled() - 1);
+                getPath(node);
+                while (!path.empty())
+                    System.out.println(path.pop().getDirection());
+                break;
+            } else
+                priorityQueue.addAll(node.getChildren());
         }
+    }
+
+    private static void getPath(Node node) {
+        path.push(node);
+        if (!Objects.equals(node.getDirection(), "start"))
+            getPath(node.getParent());
     }
 }
