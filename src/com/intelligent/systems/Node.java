@@ -1,6 +1,7 @@
 package com.intelligent.systems;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -52,6 +53,28 @@ class Node implements Comparable {
 
     private int getTileAtCoordinates(Coordinates coordinates) {
         return this.puzzle[coordinates.getX()][coordinates.getY()];
+    }
+
+    private int getPermutations() {
+        int sum = 0;
+        List<Integer> pastList = new ArrayList<>();
+        for (int[] aPuzzle : this.puzzle) {
+            for (int integer : aPuzzle) {
+                sum += getPermutationsForNumber(integer, pastList);
+            }
+        }
+        return sum;
+    }
+
+    private int getPermutationsForNumber(int integer, List<Integer> pastList) {
+        int temp = integer;
+        for (Integer listInteger : pastList) {
+            if (temp > listInteger)
+                temp--;
+        }
+        pastList.add(integer);
+        temp--;
+        return temp;
     }
 
     private Coordinates getZeroCoordinates() {
