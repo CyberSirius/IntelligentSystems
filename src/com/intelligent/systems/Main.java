@@ -1,9 +1,8 @@
 package com.intelligent.systems;
 
-import java.util.Arrays;
-import java.util.Collections;
+import com.intelligent.systems.siliding.blocks.SlidingBlocks;
+
 import java.util.Scanner;
-import java.util.Stack;
 
 public class Main {
 

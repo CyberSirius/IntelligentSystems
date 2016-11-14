@@ -1,4 +1,4 @@
-package com.intelligent.systems;
+package com.intelligent.systems.siliding.blocks;
 
 class Coordinates {
     private int x;

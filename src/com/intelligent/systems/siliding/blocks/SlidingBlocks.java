@@ -1,12 +1,12 @@
-package com.intelligent.systems;
+package com.intelligent.systems.siliding.blocks;
 
 
 import java.util.*;
 
-class SlidingBlocks {
-    private static Stack<Node> path = new Stack<>();
+public class SlidingBlocks {
+    private static Stack<Puzzle> path = new Stack<>();
 
-    static void solve(int sideOfPuzzle) {
+    public static void solve(int sideOfPuzzle) {
         int[][] puzzle = new int[sideOfPuzzle][sideOfPuzzle];
         Scanner in = new Scanner(System.in);
         for (int i = 0; i < sideOfPuzzle; i++) {
@@ -16,7 +16,7 @@ class SlidingBlocks {
                 puzzle[i][j] = line.get(j);
             }
         }
-        Node start = new Node(puzzle, 0, "start");
+        Puzzle start = new Puzzle(puzzle, 0, "start");
         aStar(start);
     }
 
@@ -29,25 +29,25 @@ class SlidingBlocks {
         return integerLine;
     }
 
-    private static void aStar(Node start) {
-        PriorityQueue<Node> priorityQueue = new PriorityQueue<>();
+    private static void aStar(Puzzle start) {
+        PriorityQueue<Puzzle> priorityQueue = new PriorityQueue<>();
         priorityQueue.add(start);
         while (!priorityQueue.isEmpty()) {
-            Node node = priorityQueue.poll();
-            if (node.isGoal()) {
-                System.out.println(node.getDistanceTravelled() - 1);
-                getPath(node);
+            Puzzle puzzle = priorityQueue.poll();
+            if (puzzle.isGoal()) {
+                System.out.println(puzzle.getDistanceTravelled() - 1);
+                getPath(puzzle);
                 while (!path.empty())
                     System.out.println(path.pop().getDirection());
                 break;
             } else
-                priorityQueue.addAll(node.getChildren());
+                priorityQueue.addAll(puzzle.getChildren());
         }
     }
 
-    private static void getPath(Node node) {
-        path.push(node);
-        if (!Objects.equals(node.getDirection(), "start"))
-            getPath(node.getParent());
+    private static void getPath(Puzzle puzzle) {
+        path.push(puzzle);
+        if (!Objects.equals(puzzle.getDirection(), "start"))
+            getPath(puzzle.getParent());
     }
 }

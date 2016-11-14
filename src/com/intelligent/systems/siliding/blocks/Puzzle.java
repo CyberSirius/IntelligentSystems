@@ -1,17 +1,17 @@
-package com.intelligent.systems;
+package com.intelligent.systems.siliding.blocks;
+
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
-class Node implements Comparable {
+class Puzzle implements Comparable {
     private int[][] puzzle;
     private int distanceTravelled = 0;
     private String direction;
-    private Node parent;
+    private Puzzle parent;
 
-    Node(int[][] puzzle, int distanceTravelled, String direction) {
+    Puzzle(int[][] puzzle, int distanceTravelled, String direction) {
         this.puzzle = new int[puzzle.length][puzzle.length];
         for (int i = 0; i < puzzle.length; i++)
             System.arraycopy(puzzle[i], 0, this.puzzle[i], 0, puzzle[i].length);
@@ -24,27 +24,27 @@ class Node implements Comparable {
     }
 
 
-    List<Node> getChildren() {
+    List<Puzzle> getChildren() {
         Coordinates zeroCoordinates = getZeroCoordinates();
-        List<Node> nodes = new ArrayList<>();
+        List<Puzzle> puzzles = new ArrayList<>();
         if (zeroCoordinates.getX() > 0)
-            nodes.add(swapTiles(zeroCoordinates, new Coordinates(zeroCoordinates.getX() - 1, zeroCoordinates.getY()), "down"));
+            puzzles.add(swapTiles(zeroCoordinates, new Coordinates(zeroCoordinates.getX() - 1, zeroCoordinates.getY()), "down"));
         if (zeroCoordinates.getX() < this.puzzle.length - 1)
-            nodes.add(swapTiles(zeroCoordinates, new Coordinates(zeroCoordinates.getX() + 1, zeroCoordinates.getY()), "up"));
+            puzzles.add(swapTiles(zeroCoordinates, new Coordinates(zeroCoordinates.getX() + 1, zeroCoordinates.getY()), "up"));
         if (zeroCoordinates.getY() > 0)
-            nodes.add(swapTiles(zeroCoordinates, new Coordinates(zeroCoordinates.getX(), zeroCoordinates.getY() - 1), "right"));
+            puzzles.add(swapTiles(zeroCoordinates, new Coordinates(zeroCoordinates.getX(), zeroCoordinates.getY() - 1), "right"));
         if (zeroCoordinates.getY() < this.puzzle.length - 1)
-            nodes.add(swapTiles(zeroCoordinates, new Coordinates(zeroCoordinates.getX(), zeroCoordinates.getY() + 1), "left"));
-        return nodes;
+            puzzles.add(swapTiles(zeroCoordinates, new Coordinates(zeroCoordinates.getX(), zeroCoordinates.getY() + 1), "left"));
+        return puzzles;
     }
 
 
-    private Node swapTiles(Coordinates zeroCoordinates, Coordinates coordinates, String direction) {
-        Node swappedNode = new Node(this.puzzle, this.getDistanceTravelled(), direction);
-        swappedNode.setParent(this);
-        swappedNode.setTileAtCoordinates(zeroCoordinates, this.getTileAtCoordinates(coordinates));
-        swappedNode.setTileAtCoordinates(coordinates, 0);
-        return swappedNode;
+    private Puzzle swapTiles(Coordinates zeroCoordinates, Coordinates coordinates, String direction) {
+        Puzzle swappedPuzzle = new Puzzle(this.puzzle, this.getDistanceTravelled(), direction);
+        swappedPuzzle.setParent(this);
+        swappedPuzzle.setTileAtCoordinates(zeroCoordinates, this.getTileAtCoordinates(coordinates));
+        swappedPuzzle.setTileAtCoordinates(coordinates, 0);
+        return swappedPuzzle;
     }
 
     private void setTileAtCoordinates(Coordinates coordinates, int i) {
@@ -102,10 +102,10 @@ class Node implements Comparable {
 
     @Override
     public int compareTo(Object o) {
-        int compare = Integer.compare(this.getHeuristicEvaluation(), ((Node) o).getHeuristicEvaluation());
+        int compare = Integer.compare(this.getHeuristicEvaluation(), ((Puzzle) o).getHeuristicEvaluation());
         if (compare != 0)
             return compare;
-        else return Integer.compare(this.getManhattanDistance(), ((Node) o).getManhattanDistance());
+        else return Integer.compare(this.getManhattanDistance(), ((Puzzle) o).getManhattanDistance());
     }
 
     int getDistanceTravelled() {
@@ -129,11 +129,11 @@ class Node implements Comparable {
         this.direction = direction;
     }
 
-    public Node getParent() {
+    public Puzzle getParent() {
         return parent;
     }
 
-    public void setParent(Node parent) {
+    public void setParent(Puzzle parent) {
         this.parent = parent;
     }
 }
